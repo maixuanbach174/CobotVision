@@ -1,7 +1,7 @@
 import cv2
 from pathlib import Path
 
-num = '4'
+num = 'report'
 my_folder = Path("dataset/action_" + num)
 print(my_folder)
 my_folder.mkdir(exist_ok=True, parents=True)
