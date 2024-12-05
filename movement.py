@@ -36,7 +36,8 @@ def perform_actions(mc, actions):
     print("All actions completed!")
 
 # File path
-file_path = "dataset/action_4/joint_angles.json"
+file_path = "dataset/action_12/joint_angles.json"
+
 
 # Main
 if __name__ == "__main__":
