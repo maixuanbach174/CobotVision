@@ -32,11 +32,11 @@ def perform_actions(mc, actions):
         elif grip_status == 0:
             mc.set_gripper_state(0, 50)
             time.sleep(1)
-
+    
     print("All actions completed!")
 
 # File path
-file_path = "dataset/action_152/joint_angles.json"
+file_path = "dataset/action_248/joint_angles.json"
 
 
 # Main
