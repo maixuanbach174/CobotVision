@@ -26,17 +26,12 @@ def perform_actions(mc, actions):
         time.sleep(1)  # Allow movement to complete
 
         # Grip control
-        if grip_status == 1:
-            mc.set_gripper_state(1, 50)
-            time.sleep(1)# Close grip
-        elif grip_status == 0:
-            mc.set_gripper_state(0, 50)
-            time.sleep(1)
+        
     
     print("All actions completed!")
 
 # File path
-file_path = "dataset/action_300/joint_angles.json"
+file_path = "dataset/action_312/joint_angles.json"
 
 
 # Main
