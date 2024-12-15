@@ -1,7 +1,7 @@
 import cv2
 from pathlib import Path
 
-num = 313
+num = 500
 folder = Path('dataset/action_' + str(num))
 folder.mkdir(parents=True, exist_ok=True)
 
