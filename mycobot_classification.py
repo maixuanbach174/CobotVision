@@ -4,6 +4,11 @@ from torchvision import transforms
 import numpy as np
 from torch import nn
 from torchvision.models import resnet18, ResNet18_Weights
+from pymycobot.mycobot import MyCobot
+import time
+from movement import perform_actions
+
+mc = MyCobot('/dev/ttyAMA0', 1000000)
 
 # Load the pre-trained model
 class ImageToJointAngles(nn.Module):
@@ -36,58 +41,36 @@ class ImageToJointAngles(nn.Module):
 
 
 model = ImageToJointAngles()
-model.load_state_dict(torch.load("model/modelV0.pth"))
+model.load_state_dict(torch.load("model/modelV0.pth", weights_only=True))
 model.eval()
 
+def predict(image: torch.Tensor, model: nn.Module) -> torch.Tensor:
+    append_list = [-1, 1, -1, 0, -1]
+    append_column = np.array(append_list).reshape(-1, 1)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert to RGB
+    image = cv2.resize(image, dsize=(224, 224))
+    image = image / 255.0 
+    image = np.transpose(image, (2, 0, 1)) 
+    image_tensor = torch.tensor(image, dtype=torch.float32)
+    image_tensor = image_tensor.unsqueeze(0)
+    with torch.inference_mode():
+        joint_angles = model(image_tensor)
+    joint_angles = joint_angles.cpu().numpy().flatten()
+    joint_angles = np.round(joint_angles.reshape(5, 6) * 180.0)
+    joint_angles = np.hstack((joint_angles, append_column))
+    return joint_angles
+
 # Define image preprocessing pipeline
-transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Resize((224, 224)),  # Model's input size
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
+cap = cv2.VideoCapture(0)
+ret, frame = cap.read()
+frame = frame[254:444, 537:727]
+image = frame
 
-# Define the region of interest (ROI)
-ROI_TOP_LEFT = (100, 100)
-ROI_BOTTOM_RIGHT = (400, 400)
-
-# Capture real-time video feed
-cap = cv2.VideoCapture(0)  # Replace with your camera's ID
-while True:
-    ret, frame = cap.read()
-    if not ret:
+while(True):
+    cv2.imshow('img', frame)
+    if cv2.waitKey(1) & 0xFF == ord('y'):
+        joint_angles = predict(image, model)
+        perform_actions(mc, joint_angles)
+        cv2.destroyAllWindows()
         break
-
-    # Draw the region of interest (ROI) on the frame
-    cv2.rectangle(frame, ROI_TOP_LEFT, ROI_BOTTOM_RIGHT, (0, 255, 0), 2)
-    roi = frame[ROI_TOP_LEFT[1]:ROI_BOTTOM_RIGHT[1], ROI_TOP_LEFT[0]:ROI_BOTTOM_RIGHT[0]]
-
-    # Preprocess the ROI for model input
-    roi_rgb = cv2.cvtColor(roi, cv2.COLOR_BGR2RGB)
-    roi_tensor = transform(roi_rgb).unsqueeze(0)  # Add batch dimension
-
-    # Predict using the model
-    with torch.no_grad():
-        predicted_angles = model(roi_tensor).squeeze(0)  # Shape: (5, 7)
-
-    # Extract gripper state and joint angles
-    gripper_state = predicted_angles[4, 0].item()  # Example: gripper control value
-    joint_angles = predicted_angles[:5, :6].flatten().tolist()  # Extract joint angles
-
-    # If the ROI is blank (no object), do nothing
-    if np.sum(roi) < 1000:  # Example threshold for detecting blank ROI
-        print("No object detected. MyCobot is idle.")
-        continue
-
-    # If object is detected, execute gripping motion
-    print("Object detected! Executing motion.")
-    print(joint_angles)
-    # Display the real-time frame
-    cv2.imshow("Real-Time Gripping", frame)
-
-    # Break the loop if 'q' is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# Release resources
 cap.release()
-cv2.destroyAllWindows()
