@@ -70,7 +70,7 @@ while(True):
     cv2.imshow('img', frame)
     if cv2.waitKey(1) & 0xFF == ord('y'):
         joint_angles = predict(image, model)
-        perform_actions(mc, joint_angles)
+        print(joint_angles)
         cv2.destroyAllWindows()
         break
 cap.release()
