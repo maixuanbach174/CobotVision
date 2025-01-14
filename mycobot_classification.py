@@ -74,17 +74,3 @@ while(True):
         cv2.destroyAllWindows()
         break
 cap.release()
-
-sudo apt update
-sudo apt install -y build-essential libssl-dev libffi-dev zlib1g-dev libncurses5-dev libnss3-dev libsqlite3-dev libreadline-dev libbz2-dev
-
-wget https://www.python.org/ftp/python/3.11.5/Python-3.11.5.tgz
-tar -xvzf Python-3.11.5.tgz
-cd Python-3.11.5
-
-./configure --enable-optimizations
-make -j$(nproc)
-sudo make altinstall  # Use altinstall to avoid overwriting the default `python3`
-
-
-
