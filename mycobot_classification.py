@@ -74,3 +74,6 @@ while(True):
         cv2.destroyAllWindows()
         break
 cap.release()
+
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
