@@ -5,8 +5,7 @@ import numpy as np
 from torch import nn
 from torchvision.models import resnet18, ResNet18_Weights
 from pymycobot.mycobot import MyCobot
-import time
-from movement import perform_actions
+from src.movement import perform_actions
 
 mc = MyCobot('/dev/ttyAMA0', 1000000)
 

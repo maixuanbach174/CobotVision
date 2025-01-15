@@ -1,12 +1,15 @@
-# Use the official PyTorch image
-FROM pytorch/pytorch:latest
+# Step 1: Use Python base image for ARM (Raspberry Pi)
+FROM python:3.10-slim-bullseye
 
-# Set the working directory in the container
-WORKDIR /workspace
+# Step 2: Set a working directory
+WORKDIR /app
 
-# Install any additional dependencies
-RUN pip install --upgrade pip && \
-    pip install numpy pandas matplotlib
+# Step 3: Copy project files to the container
+COPY . .
 
-# Set the default command to run Python
-CMD ["python"]
+# Step 4: Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Step 5: Define the default command to run the app
+CMD ["python", "main.py"]
+
