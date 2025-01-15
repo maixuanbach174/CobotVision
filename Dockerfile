@@ -1,17 +1,19 @@
-# Step 1: Use Python base image for ARM (Raspberry Pi)
-FROM pytorch/pytorch:latest
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
 
-# Step 2: Set a working directory
-WORKDIR /app
+# Install pip (if not already available)
+RUN python -m ensurepip --upgrade
 
-# Step 3: Copy project files to the container
-COPY requirements.txt .
+# Upgrade pip to the latest version
+RUN pip install --upgrade pip
 
-# Step 4: Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install PyTorch and torchvision
+RUN pip install torch torchvision
 
-COPY . .
+# Check Python version
+RUN python --version
 
-# Step 5: Define the default command to run the app
-CMD ["python", "src/mycobot_classification./py"]
+# Check pip version
+RUN pip --version
+
 
