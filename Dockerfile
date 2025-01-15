@@ -7,6 +7,6 @@ RUN python --version
 # Check pip version
 RUN pip --version
 
-wget https://github.com/nmilosev/pytorch-arm-builds/raw/refs/heads/master/torch-1.2.0a0+8554416-cp37-cp37m-linux_armv7l.whl -O torch.whl
+wget https://github.com/nmilosev/pytorch-arm-builds/raw/refs/heads/master/torch-1.1.0-cp37-cp37m-linux_armv7l.whl
 
 
