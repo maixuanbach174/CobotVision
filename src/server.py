@@ -43,8 +43,8 @@ async def handler(websocket):
         print("Error:", e)
     finally:
         print("Client disconnected")
+        cv2.destroyAllWindows(1)
         cap.release()
-        cv2.destroyAllWindows()
 
 # Start the WebSocket server
 async def main():
