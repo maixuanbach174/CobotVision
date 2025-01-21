@@ -2,7 +2,7 @@ from websocket import create_connection
 
 try:
     # Replace with your WebSocket server URL
-    ws_url = "wss://43d1-133-16-42-18.ngrok-free.app"
+    ws_url = "wss://2fed-133-16-42-18.ngrok-free.app"
     
     # Attempt to create a connection
     ws = create_connection(ws_url)
