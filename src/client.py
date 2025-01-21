@@ -3,7 +3,7 @@ import websockets
 import numpy as np
 
 async def client():
-    uri = "ws://0.0.0.0:8080"
+    uri = "ws://c617-133-16-42-18.ngrok-free.app"
 
     try:
         async with websockets.connect(uri) as websocket:
