@@ -1,6 +1,6 @@
 import asyncio
 import websockets
-from movement import perform_actions
+from movement import perform_actions, mc
 import numpy as np
 
 async def client():
@@ -16,7 +16,7 @@ async def client():
 
                 joint_angles = np.array(eval(message)) 
                 print("Parsed joint angles matrix (5x7):\n", joint_angles)
-                perform_actions(joint_angles)
+                perform_actions(mc, joint_angles.tolist())
 
     except websockets.exceptions.ConnectionClosed:
         print("Connection closed by the server.")

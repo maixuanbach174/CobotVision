@@ -11,7 +11,7 @@ async def handler(websocket):
 
         while True:
             ret, frame = cap.read()
-            cropped_frame = frame[254:444, 537:727]
+            cropped_frame = frame[383:667, 796:1080]
             if not ret:
                 print("Failed to capture frame.")
                 break
