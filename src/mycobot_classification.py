@@ -4,22 +4,16 @@ from torchvision import transforms
 import numpy as np
 from torch import nn
 from torchvision.models import resnet18, ResNet18_Weights
-from pymycobot.mycobot import MyCobot
-from src.movement import perform_actions
 
-mc = MyCobot('/dev/ttyAMA0', 1000000)
-
-# Load the pre-trained model
+# Define the model
 class ImageToJointAngles(nn.Module):
     def __init__(self):
         super(ImageToJointAngles, self).__init__()
-        # Backbone: Use a pretrained ResNet18 for feature extraction
         self.resnet = resnet18(weights=ResNet18_Weights.DEFAULT)
         self.resnet.fc = nn.Identity()  # Remove the final fully connected layer
         
-        # Fully connected layers to predict joint angles
         self.fc = nn.Sequential(
-            nn.Linear(512, 256),  # ResNet18 outputs 512 features
+            nn.Linear(512, 256),
             nn.ReLU(),
             nn.Linear(256, 128),
             nn.ReLU(),
@@ -27,29 +21,24 @@ class ImageToJointAngles(nn.Module):
         )
         
     def forward(self, x):
-        # Feature extraction
         features = self.resnet(x)
-        
-        # Fully connected layers
         joint_angles = self.fc(features)
-        
-        # Reshape output to (batch_size, 5, 6)
         joint_angles = joint_angles.view(-1, 5, 6)
-        
         return joint_angles
 
-
+# Load the model
 model = ImageToJointAngles()
-model.load_state_dict(torch.load("model/modelV0.pth", weights_only=True))
+model.load_state_dict(torch.load("models/modelV0.pth", weights_only=True))
 model.eval()
 
+# Function to preprocess and predict
 def predict(image: torch.Tensor, model: nn.Module) -> torch.Tensor:
     append_list = [-1, 1, -1, 0, -1]
     append_column = np.array(append_list).reshape(-1, 1)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # Convert to RGB
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = cv2.resize(image, dsize=(224, 224))
-    image = image / 255.0 
-    image = np.transpose(image, (2, 0, 1)) 
+    image = image / 255.0
+    image = np.transpose(image, (2, 0, 1))
     image_tensor = torch.tensor(image, dtype=torch.float32)
     image_tensor = image_tensor.unsqueeze(0)
     with torch.inference_mode():
@@ -58,18 +47,3 @@ def predict(image: torch.Tensor, model: nn.Module) -> torch.Tensor:
     joint_angles = np.round(joint_angles.reshape(5, 6) * 180.0)
     joint_angles = np.hstack((joint_angles, append_column))
     return joint_angles
-
-# Define image preprocessing pipeline
-cap = cv2.VideoCapture(0)
-ret, frame = cap.read()
-frame = frame[254:444, 537:727]
-image = frame
-
-while(True):
-    cv2.imshow('img', frame)
-    if cv2.waitKey(1) & 0xFF == ord('y'):
-        joint_angles = predict(image, model)
-        print(joint_angles)
-        cv2.destroyAllWindows()
-        break
-cap.release()
