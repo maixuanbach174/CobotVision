@@ -1,12 +1,16 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+FROM python:3.13.1-slim
 
-# Check Python version
-RUN python --version
+# Set the working directory in the container
+WORKDIR /app
 
-# Check pip version
-RUN pip --version
+# Copy your script into the container
+COPY src/server/. /app
 
-wget https://github.com/nmilosev/pytorch-arm-builds/raw/refs/heads/master/torch-1.1.0-cp37-cp37m-linux_armv7l.whl
+# Install required libraries
+RUN pip install websockets
 
+# Expose the port the WebSocket server listens on
+EXPOSE 8080
 
+# Run the script
+CMD ["python", "server.py"]
