@@ -28,7 +28,7 @@ class ImageToJointAngles(nn.Module):
 
 # Load the model
 model = ImageToJointAngles()
-model.load_state_dict(torch.load("models/modelV0.pth", weights_only=True))
+model.load_state_dict(torch.load("models/modelV0.pth", map_location="cpu",weights_only=True))
 model.eval()
 
 # Function to preprocess and predict

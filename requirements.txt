@@ -1,6 +1,5 @@
-torchvision==0.15.2
-numpy
-pandas
-matplotlib
+torch==2.4.1
+torchvision==0.19.1
 opencv-python
-pymycobot==3.5.2
+websocket-client
+websockets

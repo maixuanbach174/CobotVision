@@ -24,7 +24,7 @@ async def handler(websocket):
                 print("Capturing and processing image...")
                 # Predict joint angles using the model
                 joint_angles = predict(cropped_frame, model)
-                print("Predicted Joint Angles:", joint_angles)
+                print("Predicted Joint Angles:\n", joint_angles)
 
                 # Send joint angles to the client
                 await websocket.send(str(joint_angles.tolist()))
@@ -43,8 +43,9 @@ async def handler(websocket):
         print("Error:", e)
     finally:
         print("Client disconnected")
-        cv2.destroyAllWindows(1)
         cap.release()
+        cv2.destroyAllWindows()
+        cv2.waitKey(1)
 
 # Start the WebSocket server
 async def main():

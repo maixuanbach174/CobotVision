@@ -1,3 +1,7 @@
+
+# This code is not used in the final version of the project. 
+# It was used to capture images for the dataset.
+
 import cv2
 from pathlib import Path
 

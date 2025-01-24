@@ -1,13 +1,13 @@
 import asyncio
 import websockets
-from movement import perform_actions, mc
+from server.movement import perform_actions, mc
 import numpy as np
 
-async def client():
-    uri = "wss://c617-133-16-42-18.ngrok-free.app"
+URI = "wss://c617-133-16-42-18.ngrok-free.app" # Replace with your URI
 
+async def client():
     try:
-        async with websockets.connect(uri) as websocket:
+        async with websockets.connect(URI) as websocket:
             print("Connected to the server.")
 
             while True:
