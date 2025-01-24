@@ -1,12 +1,14 @@
-# **MyCobot Classification and Sorting Project**
+# **Deep Learning-Based Robot Arm for Real-Time Object Detection and Classification**
+
+---
 
 ## **Table of Contents**
 1. [Introduction](#introduction)
 2. [Features](#features)
-3. [Dataset](#dataset)
-4. [Deep Learning Model](#deep-learning-model)
-5. [System Design](#system-design)
-6. [Documentation and Demo](#documentation-and-demo)
+3. [Documentation and Demo](#documentation-and-demo)
+4. [Dataset](#dataset)
+5. [Model Architecture](#model-architecture)
+6. [System Design](#system-design) 
 7. [How to Run](#how-to-run)
 8. [Troubleshooting](#troubleshooting)
 9. [Acknowledgements](#acknowledgements)
@@ -30,6 +32,13 @@ This project uses the MyCobot 280 Pi robotic arm for classifying and sorting obj
 - **Custom Dataset Creation**: Supports dataset with structured image and joint angle mapping.
 - **WebSocket Communication**: Enables smooth communication between the laptop and MyCobot.
 - **Easy Integration**: Designed for anyone looking to expand robotic capabilities.
+
+---
+
+## **6. Documentation and Demo**
+- **Documentation**: [Access Full Documentation](#link-to-documentation)
+- **Demo Video**: [Watch the Demo](#link-to-demo-video)
+- **Project Repository**: [GitHub Repository](#link-to-repository)
 
 ---
 
@@ -87,13 +96,6 @@ The system uses WebSocket to connect the laptop and MyCobot via a public server.
 3. **MyCobot**: Executes actions based on received joint angles.
 
 ![System Diagram](#link-to-server-design-image)
-
----
-
-## **6. Documentation and Demo**
-- **Documentation**: [Access Full Documentation](#link-to-documentation)
-- **Demo Video**: [Watch the Demo](#link-to-demo-video)
-- **Project Repository**: [GitHub Repository](#link-to-repository)
 
 ---
 
