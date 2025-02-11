@@ -36,6 +36,7 @@ async def handler(websocket):
 
         cap.release()  # Release the camera resource
         cv2.destroyAllWindows()  # Close OpenCV windows
+        cv2.waitKey(1)
 
     except websockets.exceptions.ConnectionClosed:
         print("Connection closed")
@@ -52,7 +53,7 @@ async def main():
     print("Starting WebSocket server...")
     async with websockets.serve(handler, "0.0.0.0", 8080):
         print("WebSocket server running on ws://0.0.0.0:8080")
-        await asyncio.Future()  # Keeps the server running
+        await asyncio.Future()
 
 if __name__ == "__main__":
     asyncio.run(main())
